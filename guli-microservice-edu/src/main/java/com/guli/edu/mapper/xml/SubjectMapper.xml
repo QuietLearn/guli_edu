@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guli.edu.mapper.SubjectMapper">
+
+    <resultMap id="BaseResultMap" type="com.guli.edu.vo.SubjectNestedVo">
+
+        <id column="id" property="id" javaType="java.lang.String" jdbcType="CHAR" />
+        <result column="title" property="title" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <collection property="children" select="com.guli.edu.mapper.SubjectMapper.selectNestedListByParentId"
+             column="id"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,parent_id,sort,gmt_create,gmt_modified
+      </sql>
+    <!--public int batchInsert(Set<Subject> subjectSet);-->
+    <insert id="batchInsert" parameterType="java.util.Set" useGeneratedKeys="true" keyProperty="id">
+    insert into edu_subject (
+    <include refid="Base_Column_List"/>
+      )
+    values
+    <foreach collection="subjectSet" item="subject"  separator=",">
+        (#{subject.id,jdbcType=CHAR}, #{subject.title,jdbcType=VARCHAR}, #{subject.parent_id,jdbcType=CHAR},
+        #{subject.sort,jdbcType=INTEGER})
+    </foreach>
+    </insert>
+
+    <select id="selectNestedListByParentId" parameterType="string" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM edu_subject
+        WHERE parent_id=#{parentId}
+    </select>
+</mapper>

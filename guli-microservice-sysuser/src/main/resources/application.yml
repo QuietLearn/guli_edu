@@ -1,0 +1,14 @@
+eureka:
+  client:
+    register-with-eureka: true #注册在注册中心
+    fetch-registry: true #拉去注册在注册中心的所有服务
+    service-url:
+      defaultZone: http://localhost:8220/eureka
+  instance:
+    prefer-ip-address: true #使用ip注册进去
+
+spring:
+  #返回json的全局时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss #默认情况下json时间格式带有时区，并且是世界标准时间，和我们的时间差了八个小时
+    time-zone: GMT+8

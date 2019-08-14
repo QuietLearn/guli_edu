@@ -1,0 +1,37 @@
+eureka:
+  client:
+    register-with-eureka: true #注册在注册中心
+    fetch-registry: true #拉去注册在注册中心的所有服务
+    service-url:
+      #http://localhost:8760/eureka, http://localhost:8761/eureka, http://localhost:8762/eureka
+      # 保证可以连到1个eureka服务器，然后获取其他服务配置信息
+      defaultZone: http://localhost:8220/eureka
+  instance:
+    prefer-ip-address: true #使用ip注册进去
+    # 心跳检测检测与续约时间
+    # 测试时将值设置设置小些，保证服务关闭后注册中心能及时踢出服务
+    # 配置说明
+    #　　lease-renewal-interval-in-seconds 每间隔5s，向服务端发送一次心跳，证明自己依然”存活“
+    #　　lease-expiration-duration-in-seconds  告诉服务端，如果我10s之内没有给你发心跳，就代表我“死”了，将我踢出掉。
+    lease-renewal-interval-in-seconds: 5
+    # 应该在之前request发送成功给服务端消息时就携带，如果10s后还没有发送心跳，
+    # 服务器根据之前接受的报文信息判断该服务已死，并在5s后清理失效服务
+    lease-expiration-duration-in-seconds: 10
+
+
+
+# 服务端口
+server:
+  port: 8130
+spring:
+  application:
+    name: guli-aliyunoss # 服务名
+  profiles:
+    active: dev    # 环境设置：dev、test、prod
+  #返回json的全局时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss #默认情况下json时间格式带有时区，并且是世界标准时间，和我们的时间差了八个小时
+    time-zone: GMT+8
+
+
+

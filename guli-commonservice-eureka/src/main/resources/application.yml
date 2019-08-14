@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: guli-eureka-server #spring-cloud-eureka
+  # 环境设置：dev、test、prod
+  profiles:
+    active: dev
+# 注册中心实例主机
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      # 以后服务都注册到默认的区域中，因为只有1个区域，
+      # 原理，相同的服务建立集群可以发布到不同的区域，ip也不同，当访问该集群的服务时，注册中心自动匹配速度最近的区域的服务(一般最近最快)
+
+      # 0注册到8761上，eureka的集群互相注册即可成立这样两个之间就可以互相复制信息，交换信息了，
+      # 服务列表就可以互相同步了，没有主从，没有主服务器，地位平等，
+      # 互为注册中心，互相注册了一下
+      # 启动1个改1下，未来是运维自动化完成
+      # defaultZone:  http://localhost:8761/eureka,http://localhost:8762/eureka
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka # 设置以后所有的服务都注册到这个地址下
+    fetch-registry: false # 自己不从注册中心中获取什么服务数据
+    register-with-eureka: false # 注册中心自己不用注册进注册中心
+  server:
+    #关闭保护机制，以确保注册中心将不可用的实例正确剔除
+    enable-self-preservation: false
+    #（代表是5秒，单位是毫秒,清理失效服务的间隔 ）
+    # 每隔5s一清，清理已经失效宕机死亡的服务
+    eviction-interval-timer-in-ms: 5000
+#服务端口
+server:
+  port: 8220

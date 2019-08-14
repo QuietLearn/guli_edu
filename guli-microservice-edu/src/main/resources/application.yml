@@ -1,0 +1,61 @@
+eureka:
+  client:
+    register-with-eureka: true #注册在注册中心
+    fetch-registry: true #拉去注册在注册中心的所有服务
+    service-url:
+      #http://localhost:8760/eureka, http://localhost:8761/eureka, http://localhost:8762/eureka
+      # 保证可以连到1个eureka服务器，然后获取其他服务配置信息
+      defaultZone: http://localhost:8220/eureka
+  instance:
+    prefer-ip-address: true #使用ip注册进去
+    # 心跳检测检测与续约时间
+    # 测试时将值设置设置小些，保证服务关闭后注册中心能及时踢出服务
+    # 配置说明
+    #　　lease-renewal-interval-in-seconds 每间隔5s，向服务端发送一次心跳，证明自己依然”存活“
+    #　　lease-expiration-duration-in-seconds  告诉服务端，如果我10s之内没有给你发心跳，就代表我“死”了，将我踢出掉。
+    lease-renewal-interval-in-seconds: 5
+    # 应该在之前request发送成功给服务端消息时就携带，如果10s后还没有发送心跳，
+    # 服务器根据之前接受的报文信息判断该服务已死，并在5s后清理失效服务
+    lease-expiration-duration-in-seconds: 10
+
+
+
+# 服务端口
+server:
+  port: 8110
+spring:
+  application:
+    name: guli-edu # 服务名
+  profiles:
+    active: dev    # 环境设置：dev、test、prod
+  #返回json的全局时间格式
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss #默认情况下json时间格式带有时区，并且是世界标准时间，和我们的时间差了八个小时
+
+mybatis-plus:
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 2
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    db-column-underline: true
+    #逻辑删除配置
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #mybatis日志
+    # 是否开启懒加载,只有开启了开关，在对应的sqlmapper文件的分步查询fetchtype属性才生效
+    lazy-loading-enabled: true
+    # 懒加载的方式，是执行时都加载还是 使用时加载 ， false 是使用时加载
+    aggressive-lazy-loading: false
+  # com.guli.edu.mapper.mappers
+  mapper-locations: classpath:com/guli/edu/mapper/xml/*.xml
+
+pagehelper:
+  reasonable: false # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  support-methods-arguments: true
+  params: count=countSql
+  row-bounds-with-count: true
+  helper-dialect: mysql
