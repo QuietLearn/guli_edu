@@ -55,10 +55,20 @@ public class JwtUtils {
      */
     public static Claims checkJWT(String jwtToken){
 
+//        过期时间能够验证是因为是jwt的自带负载，jwt解析会先验证这些自带负载属性，jwt解析 验证通过才能使用jwt的内容
+//        HMACSHA256(base64UrlEncode(header) + "." +base64UrlEncode(payload),your-256-bit-secret jwts根据该算法用密钥进行验签
+//)
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APPSECRET).parseClaimsJws(jwtToken);
         Claims claims = claimsJws.getBody();
 
 
         return claims;
+    }
+
+    public static void main(String[] args) {
+        char[] aa= new char[100];
+        aa[0]  = 222;
+        System.out.println(aa);
+        System.out.println(aa.length);
     }
 }

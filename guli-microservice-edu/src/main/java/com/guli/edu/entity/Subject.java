@@ -30,6 +30,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("edu_subject")
 @ApiModel(value="Subject对象", description="课程科目")
+//java 、 大数据、人工智能、后端开发
 public class Subject implements Serializable{
 
     private static final long serialVersionUID = 1L;

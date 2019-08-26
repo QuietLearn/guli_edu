@@ -1,6 +1,5 @@
 package com.guli.vod.controller.admin;
 
-import com.aliyuncs.vod.model.v20170321.CreateUploadVideoResponse;
 import com.guli.core.common.ServerResponse;
 import com.guli.vod.service.VideoService;
 import io.swagger.annotations.Api;

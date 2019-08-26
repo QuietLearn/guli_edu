@@ -21,6 +21,10 @@ import java.util.List;
 public class SpringMvcWebConfig extends WebMvcConfigurationSupport  {//implements WebMvcConfigurer
 
 
+    /**
+     * 配置MappingJackson2HttpMessageConverter
+     * @param converters
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         ObjectMapper objectMapper = new ObjectMapper();
